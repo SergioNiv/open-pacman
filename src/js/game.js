@@ -176,6 +176,16 @@ function decideGhost( game, g ) {
     // T = P2 + (P2 - H): objetivo reflejado del cazador respecto a P2.
     g.dir = greedyToward( choices, g.x, g.y,
       p2x + ( p2x - hx ), p2y + ( p2y - hy ) );
+  } else if ( g.kind === 'shy' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    const dist = Math.abs( g.x - px ) + Math.abs( g.y - py );
+    // Timido: persigue si esta lejos, deambula al azar si Pacman esta cerca.
+    if ( dist > SHY_DIST ) {
+      g.dir = greedyToward( choices, g.x, g.y, px, py );
+    } else {
+      g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
+    }
   } else {
     g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
   }
