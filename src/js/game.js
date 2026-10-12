@@ -13,6 +13,11 @@ const OPPOSITE = { left: 'right', right: 'left', up: 'down', down: 'up' };
 const PACMAN_SPEED = 0.125; // 1/8 celda/frame -> alinea cada 8 frames
 const GHOST_SPEED = 0.1;    // 1/10 celda/frame
 
+// Parametros de comportamiento de fantasmas (spec 01).
+const AMBUSH_AHEAD = 4; // ambush: objetivo = celda de Pacman + 4 * dir
+const INKY_AHEAD = 2;   // cooperator: P2 = celda de Pacman + 2 * dir
+const SHY_DIST = 8;     // shy: persigue si dist > 8, aleatorio si no
+
 // Crea una partida nueva. Copia MAZE (pristino) a game.grid para poder comer
 // dots sin destruir el original, y reiniciar.
 function createGame() {
@@ -110,6 +115,23 @@ function movePacman( game ) {
   wrapTunnel( p, width );
 }
 
+// Greedy Manhattan: devuelve la direccion de `choices` que mas acerca al
+// objetivo (tx,ty) desde (gx,gy). Empates: gana la primera en el orden de
+// `choices` (determinista, igual que el hunter).
+function greedyToward( choices, gx, gy, tx, ty ) {
+  let best = choices[ 0 ];
+  let bestDist = Infinity;
+  for ( const dir of choices ) {
+    const d = DIRS[ dir ];
+    const dist = Math.abs( gx + d.x - tx ) + Math.abs( gy + d.y - ty );
+    if ( dist < bestDist ) {
+      bestDist = dist;
+      best = dir;
+    }
+  }
+  return best;
+}
+
 function decideGhost( game, g ) {
   const grid = game.grid;
   const p = game.pacman;
@@ -136,6 +158,12 @@ function decideGhost( game, g ) {
       }
     }
     g.dir = best;
+  } else if ( g.kind === 'ambush' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    const lead = DIRS[ p.dir ];
+    g.dir = greedyToward( choices, g.x, g.y,
+      px + AMBUSH_AHEAD * lead.x, py + AMBUSH_AHEAD * lead.y );
   } else {
     g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
   }
