@@ -1,6 +1,6 @@
 # SPEC 01 — Cuatro fantasmas con comportamientos propios
 
-> **Estado:** Borrador
+> **Estado:** Aprovado
 > **Depende de:** —
 > **Fecha:** 2026-10-11
 > **Objetivo:** Añadir 4 fantasmas con comportamientos distintos (cazador agresivo, emboscador, cooperativo y tímido), reutilizando la infraestructura existente de `game.js`.
