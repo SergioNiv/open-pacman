@@ -51,9 +51,12 @@ const MAZE = MAZE_STR.map( ( row ) => row.split( '' ).map( parseTile ) );
 
 const TUNNEL_ROW = 14;
 const PACMAN_START = { x: 13, y: 23 };
+// El orden define el color en render.js (GHOST_COLORS por índice).
 const GHOST_STARTS = [
-  { x: 13, y: 14, kind: 'hunter' }, // dentro de la pen
-  { x: 14, y: 14, kind: 'random' }, // dentro de la pen
+  { x: 13, y: 14, kind: 'hunter' },     // cazador agresivo (rojo)
+  { x: 14, y: 14, kind: 'ambush' },     // emboscador (rosa)
+  { x: 13, y: 13, kind: 'cooperator' }, // cooperativo (cian)
+  { x: 14, y: 13, kind: 'shy' },        // tímido (naranja)
 ];
 
 window.MAZE = MAZE;

@@ -20,7 +20,7 @@ Pac-Man clone in vanilla JS/HTML/CSS. No framework, no bundler. Learning project
 
 - `MAZE_STR` must be 31 strings × 28 chars, symmetric about the vertical axis (between cols 13–14).
 - Row 14 (`TUNNEL_ROW`) is the tunnel: its ends are open (no `#`) and `wrapTunnel` wraps actors on that row.
-- Starts are hardcoded: `PACMAN_START = {x:13, y:23}` (that cell is dot-less in `createGame`), `GHOST_STARTS` at (13,14) and (14,14). Keep them consistent with any maze edit.
+- Starts are hardcoded: `PACMAN_START = {x:13, y:23}` (that cell is dot-less in `createGame`), `GHOST_STARTS` at (13,14), (14,14), (13,13), (14,13) — a 2×2 block inside the pen above the door, in order hunter / ambush / cooperator / shy. Keep them consistent with any maze edit.
 - Canvas is 560×620 = 28×31 cells at `TILE=20`. If maze dimensions change, also update the `width`/`height` attrs in `index.html`.
 
 ## Movement model
