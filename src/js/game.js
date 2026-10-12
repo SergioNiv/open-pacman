@@ -164,6 +164,18 @@ function decideGhost( game, g ) {
     const lead = DIRS[ p.dir ];
     g.dir = greedyToward( choices, g.x, g.y,
       px + AMBUSH_AHEAD * lead.x, py + AMBUSH_AHEAD * lead.y );
+  } else if ( g.kind === 'cooperator' ) {
+    const px = Math.round( p.x );
+    const py = Math.round( p.y );
+    const lead = DIRS[ p.dir ];
+    const p2x = px + INKY_AHEAD * lead.x;
+    const p2y = py + INKY_AHEAD * lead.y;
+    const hunter = game.ghosts.find( ( g2 ) => g2.kind === 'hunter' ) || game.ghosts[ 0 ];
+    const hx = Math.round( hunter.x );
+    const hy = Math.round( hunter.y );
+    // T = P2 + (P2 - H): objetivo reflejado del cazador respecto a P2.
+    g.dir = greedyToward( choices, g.x, g.y,
+      p2x + ( p2x - hx ), p2y + ( p2y - hy ) );
   } else {
     g.dir = choices[ Math.floor( Math.random() * choices.length ) ];
   }
